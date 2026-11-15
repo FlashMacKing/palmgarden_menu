@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet, isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { CORKAGE_FEE, CURRENCY, HAPPY_HOUR, MENU, happyPrice, MenuCategory, MenuItem, MenuSection, Price, formatPrice } from '../menu.data';
+import { CORKAGE_FEE, CURRENCY, HAPPY_HOUR, MENU, MenuCategory, MenuItem, MenuSection, Price, formatPrice } from '../menu.data';
 import { LogoComponent } from '../shared/logo.component';
 import { FrondComponent } from '../shared/frond.component';
 
@@ -102,11 +102,6 @@ export class MenuComponent implements AfterViewInit, OnDestroy {
   }
 
   // --- template helpers -------------------------------------------------
-
-  /** Discounted price when the happy hour covers this category. */
-  deal(categoryId: string, value: number): number | null {
-    return happyPrice(categoryId, value);
-  }
 
   isSingle(item: MenuItem): boolean {
     return item.prices.length === 1 && !item.prices[0].label;

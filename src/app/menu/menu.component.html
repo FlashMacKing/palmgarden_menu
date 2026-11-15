@@ -102,9 +102,6 @@
           [class.chip--hh]="hh.enabled && c.id === hh.categoryId"
           (click)="goToCategory(c.id, $event)">
           {{ c.title }}
-          @if (hh.enabled && c.id === hh.categoryId) {
-            <span class="chip__badge">−{{ hh.discount }} DT</span>
-          }
         </a>
       }
     </div>
@@ -127,7 +124,7 @@
           <h2 class="cat__title">{{ g.category.title }}</h2>
           <p class="cat__sub">{{ g.section.title }}</p>
         </header>
-        <ng-container *ngTemplateOutlet="list; context: { $implicit: g.items, cat: g.category.id }" />
+        <ng-container *ngTemplateOutlet="list; context: { $implicit: g.items }" />
       </section>
     }
   } @else {
@@ -138,10 +135,12 @@
             <span class="hh-banner__bubbles" aria-hidden="true">
               @for (b of bubbles; track $index) { <i [style.--b]="$index"></i> }
             </span>
-            <span class="hh-banner__tag">−{{ hh.discount }} DT</span>
+            <span class="hh-banner__tag" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M5 7h10v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7Zm10 3h2a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M5 7a3 3 0 0 1 3-3 3 3 0 0 1 4 0 3 3 0 0 1 3 3M8.5 11v6M11.5 11v6" /></svg>
+            </span>
             <span class="hh-banner__text">
               <strong>Happy hour aujourd’hui</strong>
-              <span>Toutes les bières à {{ hh.discount }} DT de moins{{ hh.hours ? ', ' + hh.hours : '' }}</span>
+              <span>Sur toutes les bières{{ hh.hours ? ', ' + hh.hours : '' }}. Touchez pour voir les prix.</span>
             </span>
             <svg class="hh-banner__go" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>
           </a>
@@ -157,7 +156,7 @@
               </h2>
               <p class="cat__sub">{{ c.subtitle }}</p>
             </header>
-            <ng-container *ngTemplateOutlet="list; context: { $implicit: c.items, cat: c.id }" />
+            <ng-container *ngTemplateOutlet="list; context: { $implicit: c.items }" />
           </section>
         }
 
@@ -187,7 +186,7 @@
   <p class="footer__small">L’abus d’alcool est dangereux pour la santé. À consommer avec modération.</p>
 </footer>
 
-<ng-template #list let-items let-cat="cat">
+<ng-template #list let-items>
   <ul class="items">
     @for (item of items; track item.name) {
       @if (isSingle(item)) {
@@ -197,16 +196,9 @@
             @if (item.note) { <small>{{ item.note }}</small> }
           </div>
           <span class="item__leader" aria-hidden="true"></span>
-          @if (deal(cat, item.prices[0].value); as now) {
-            <span class="price price--deal">
-              <s class="price__was" aria-label="Avant">{{ int(item.prices[0]) }}</s>
-              <span class="price__int">{{ int({ value: now }) }}</span><span class="price__dec">{{ dec({ value: now }) }}</span>
-            </span>
-          } @else {
-            <span class="price">
-              <span class="price__int">{{ int(item.prices[0]) }}</span><span class="price__dec">{{ dec(item.prices[0]) }}</span>
-            </span>
-          }
+          <span class="price">
+            <span class="price__int">{{ int(item.prices[0]) }}</span><span class="price__dec">{{ dec(item.prices[0]) }}</span>
+          </span>
         </li>
       } @else {
         <li class="item item--sizes">

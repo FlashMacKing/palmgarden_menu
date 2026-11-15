@@ -62,14 +62,14 @@
       </div>
 
       <p class="lede">
-        Aujourd’hui{{ hh.hours ? ', ' + hh.hours : '' }}, toutes nos bières sont à <strong>{{ hh.discount }} DT de moins</strong>.
+        Aujourd’hui{{ hh.hours ? ' ' + hh.hours : '' }}, toutes nos bières sont à <strong>{{ hh.discount }} DT de moins</strong>.
       </p>
     </section>
 
     <div class="ticker" aria-hidden="true">
       <div class="ticker__track">
         @for (t of ticker; track $index) {
-          <span>Happy hour</span><b>−{{ hh.discount }} DT</b><span>Toutes les bières</span><i>✦</i>
+          <span>Happy hour</span><b>−{{ hh.discount }} DT</b><span>Toutes les bières</span>@if (hh.hours) { <i>✦</i><span>{{ hh.hours }}</span> }<i>✦</i>
         }
       </div>
     </div>

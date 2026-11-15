@@ -37,14 +37,14 @@ export const CURRENCY = 'DT';
 export const CORKAGE_FEE = 200;
 
 /**
- * Happy hour. Set `enabled: false` to switch it off everywhere (menu banner,
- * discounted prices and the /happy-hour page). `hours` is optional, e.g. '18h – 20h'.
+ * Happy hour. Set `enabled: false` to switch it off everywhere (menu banner
+ * and the /happy-hour page). Discounted prices only appear on /happy-hour. `hours` is shown as-is, e.g. 'de 12h à 20h'.
  */
 export const HAPPY_HOUR = {
   enabled: true,
   categoryId: 'bieres',
   discount: 1,
-  hours: '' as string,
+  hours: 'de 12h à 20h' as string,
 };
 
 /** Happy-hour price for an item in `categoryId`, or null when no offer applies. */

@@ -1,6 +1,7 @@
 {
   "routes": [
     "/",
+    "/happy-hour",
     "/qr"
   ]
 }

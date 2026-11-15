@@ -1,0 +1,115 @@
+<div class="page">
+  <header class="top">
+    <a routerLink="/" class="back" aria-label="Retour à la carte">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6" /></svg>
+      La carte
+    </a>
+    <app-logo width="118px" plate="var(--bg-deep)" />
+  </header>
+
+  @if (hh.enabled) {
+    <section class="hero">
+      <div class="rays" aria-hidden="true"></div>
+
+      <h1 class="title" aria-label="Happy hour">
+        <span class="title__line" aria-hidden="true">
+          @for (ch of happy; track $index) { <span class="title__ch" [style.--i]="$index">{{ ch }}</span> }
+        </span>
+        <span class="title__line title__line--2" aria-hidden="true">
+          @for (ch of hour; track $index) { <span class="title__ch" [style.--i]="$index + 5">{{ ch }}</span> }
+        </span>
+      </h1>
+
+      <div class="stage">
+        <svg class="glass" viewBox="0 0 160 240" aria-hidden="true" [class.is-clink]="cheers() % 2 === 1" [class.is-clink2]="cheers() > 0 && cheers() % 2 === 0">
+          <defs>
+            <clipPath id="hh-glass-inside">
+              <path d="M24 44h112l-12 176a8 8 0 0 1-8 7H44a8 8 0 0 1-8-7Z" />
+            </clipPath>
+            <linearGradient id="hh-beer" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#ffd166" />
+              <stop offset="1" stop-color="#e98a15" />
+            </linearGradient>
+          </defs>
+          <g clip-path="url(#hh-glass-inside)">
+            <g class="beer">
+              <rect x="0" y="70" width="160" height="200" fill="url(#hh-beer)" />
+              @for (b of glassBubbles; track $index) {
+                <circle class="bubble" [attr.cx]="38 + (($index * 37) % 86)" cy="225" [attr.r]="1.6 + ($index % 3)" [style.--b]="$index" />
+              }
+            </g>
+          </g>
+          <g class="foam">
+            <circle cx="40" cy="58" r="17" />
+            <circle cx="64" cy="50" r="20" />
+            <circle cx="92" cy="52" r="19" />
+            <circle cx="118" cy="57" r="17" />
+            <circle cx="80" cy="64" r="22" />
+            <path class="drip" d="M128 60c4 10 4 20 0 26-4-6-4-16 0-26Z" />
+          </g>
+          <path class="glass__outline" d="M24 44h112l-12 176a8 8 0 0 1-8 7H44a8 8 0 0 1-8-7Z" />
+          <path class="glass__shine" d="M42 64l8 140" />
+        </svg>
+
+        <div class="stamp" aria-hidden="true">
+          <svg viewBox="0 0 120 120">
+            <defs><path id="hh-stamp-ring" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0" /></defs>
+            <circle cx="60" cy="60" r="58" class="stamp__disc" />
+            <text class="stamp__ring"><textPath href="#hh-stamp-ring">TOUTES LES BIÈRES ✦ AUJOURD’HUI ✦ </textPath></text>
+          </svg>
+          <span class="stamp__value">−{{ hh.discount }}<small>DT</small></span>
+        </div>
+      </div>
+
+      <p class="lede">
+        Aujourd’hui{{ hh.hours ? ', ' + hh.hours : '' }}, toutes nos bières sont à <strong>{{ hh.discount }} DT de moins</strong>.
+      </p>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        @for (t of ticker; track $index) {
+          <span>Happy hour</span><b>−{{ hh.discount }} DT</b><span>Toutes les bières</span><i>✦</i>
+        }
+      </div>
+    </div>
+
+    <section class="deals" aria-labelledby="deals-title">
+      <h2 id="deals-title" class="deals__title">Les bières en happy hour</h2>
+      <ul class="deals__list">
+        @for (d of deals; track d.name; let i = $index) {
+          <li class="deal" [style.--i]="i">
+            <span class="deal__name">{{ d.name }}</span>
+            <span class="deal__prices">
+              <s class="deal__was" aria-label="Avant">{{ price(d.was) }}</s>
+              <span class="deal__now"><b>{{ int(d.now) }}</b>,000 <small>DT</small></span>
+            </span>
+          </li>
+        }
+      </ul>
+
+      <div class="actions">
+        <button type="button" class="btn btn--cheers" (click)="toast()">
+          <span class="btn__icon" aria-hidden="true">🍻</span>
+          Santé !
+          @for (b of bursts(); track b.id) {
+            <span class="burst" aria-hidden="true">
+              @for (p of b.pieces; track $index) {
+                <i [style]="piece(p)"></i>
+              }
+            </span>
+          }
+        </button>
+        <a routerLink="/" class="btn btn--ghost">Voir toute la carte</a>
+      </div>
+    </section>
+  } @else {
+    <section class="off">
+      <h1 class="off__title">Pas de happy hour aujourd’hui</h1>
+      <p>Revenez bientôt. En attendant, toute la carte vous attend.</p>
+      <a routerLink="/" class="btn btn--ghost">Voir la carte</a>
+    </section>
+  }
+
+  <footer class="foot">L’abus d’alcool est dangereux pour la santé. À consommer avec modération.</footer>
+</div>

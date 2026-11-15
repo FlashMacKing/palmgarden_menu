@@ -594,3 +594,161 @@ $max: 620px;
   .mark { width: min(100%, 300px); }
   .frond { --s: 1; }
 }
+
+/* =========================================================
+   Happy hour on the menu
+   ========================================================= */
+
+.chip__badge {
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: var(--hibiscus);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.hh-banner {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 36px;
+  padding: 16px 14px 16px 16px;
+  border-radius: 18px;
+  color: var(--bg-deep);
+  text-decoration: none;
+  background: linear-gradient(120deg, #ffcf5c 0%, #f5a623 55%, #e8891a 100%);
+  box-shadow: 0 14px 30px -14px rgba(245, 166, 35, 0.8);
+  touch-action: manipulation;
+  animation: hh-in 0.6s var(--ease-out) both;
+  transition: transform 0.2s;
+
+  &:active { transform: scale(0.98); }
+
+  /* slow sheen so the eye catches it */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+    transform: translateX(-100%);
+    animation: sheen 3.6s ease-in-out 1s infinite;
+  }
+}
+
+.hh-banner__bubbles {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+
+  i {
+    position: absolute;
+    bottom: -12px;
+    left: calc(8% + var(--b) * 10.5%);
+    width: calc(5px + var(--b) * 0.7px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.7);
+    animation: bubble calc(2.4s + var(--b) * 0.35s) ease-in infinite;
+    animation-delay: calc(var(--b) * -0.6s);
+  }
+}
+
+.hh-banner__tag {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 21px;
+  letter-spacing: -0.01em;
+  rotate: -10deg;
+  animation: wobble 2.8s ease-in-out infinite;
+}
+
+.hh-banner__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+
+  strong { font-family: var(--font-display); font-weight: 800; font-size: 24px; text-transform: uppercase; line-height: 1; }
+  span { margin-top: 4px; font-size: 14px; font-weight: 600; }
+}
+
+.hh-banner__go {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hh-pill {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: var(--hibiscus);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  text-decoration: none;
+  translate: 0 -4px;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+
+.price--deal {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.price__was {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration-color: var(--hibiscus);
+  text-decoration-thickness: 2px;
+}
+
+@keyframes hh-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+}
+@keyframes sheen {
+  0%, 60% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes bubble {
+  from { transform: translateY(0); opacity: 0; }
+  15% { opacity: 1; }
+  to { transform: translateY(-110px); opacity: 0; }
+}
+@keyframes wobble {
+  0%, 100% { rotate: -10deg; }
+  50% { rotate: 6deg; }
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 90, 78, 0.55); }
+  60% { box-shadow: 0 0 0 8px rgba(255, 90, 78, 0); }
+}

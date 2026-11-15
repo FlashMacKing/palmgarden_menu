@@ -36,6 +36,23 @@ export const CURRENCY = 'DT';
 
 export const CORKAGE_FEE = 200;
 
+/**
+ * Happy hour. Set `enabled: false` to switch it off everywhere (menu banner,
+ * discounted prices and the /happy-hour page). `hours` is optional, e.g. '18h – 20h'.
+ */
+export const HAPPY_HOUR = {
+  enabled: true,
+  categoryId: 'bieres',
+  discount: 1,
+  hours: '' as string,
+};
+
+/** Happy-hour price for an item in `categoryId`, or null when no offer applies. */
+export function happyPrice(categoryId: string, value: number): number | null {
+  if (!HAPPY_HOUR.enabled || categoryId !== HAPPY_HOUR.categoryId) return null;
+  return Math.max(0, value - HAPPY_HOUR.discount);
+}
+
 export const MENU: MenuSection[] = [
   {
     id: 'drinks',
@@ -43,12 +60,20 @@ export const MENU: MenuSection[] = [
     categories: [
       {
         id: 'bieres',
-        title: 'Bières & Softs',
+        title: 'Bières',
         subtitle: 'Bien fraîches',
         items: [
           { name: 'Celtia', prices: p(8) },
+          { name: 'Amstel', prices: p(8) },
           { name: "Beck's", prices: p(9) },
           { name: 'Heineken', prices: p(9) },
+        ],
+      },
+      {
+        id: 'softs',
+        title: 'Softs',
+        subtitle: 'Sans alcool',
+        items: [
           { name: 'Soda', prices: p(6) },
           { name: 'Safia', note: 'Eau minérale', prices: p(6) },
           { name: 'Red Bull', prices: p(15) },

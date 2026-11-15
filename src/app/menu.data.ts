@@ -63,10 +63,10 @@ export const MENU: MenuSection[] = [
         title: 'Bières',
         subtitle: 'Bien fraîches',
         items: [
-          { name: 'Celtia', prices: p(8) },
+          { name: 'Celtia', prices: p(7) },
           { name: 'Amstel', prices: p(8) },
-          { name: "Beck's", prices: p(9) },
-          { name: 'Heineken', prices: p(9) },
+          { name: "Beck's", prices: p(8) },
+          { name: 'Heineken', prices: p(8) },
         ],
       },
       {

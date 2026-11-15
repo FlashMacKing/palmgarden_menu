@@ -1,0 +1,36 @@
+<div class="page">
+  <section class="controls">
+    <a routerLink="/" class="back">← Voir la carte</a>
+    <h1>QR code de la carte</h1>
+    <p>Indiquez l’adresse publique où la carte est en ligne, puis imprimez la carte de table ou téléchargez le QR code.</p>
+
+    <label class="field">
+      <span>Adresse de la carte</span>
+      <input #u type="url" [value]="url()" (input)="update(u.value)" placeholder="https://…" spellcheck="false" />
+    </label>
+
+    <div class="actions">
+      <button type="button" class="btn btn--primary" (click)="print()" [disabled]="!url()">Imprimer la carte</button>
+      <button type="button" class="btn" (click)="downloadPng()" [disabled]="!url()">Télécharger le PNG</button>
+    </div>
+  </section>
+
+  <article class="card" aria-label="Carte de table">
+    <app-frond class="card__leaf card__leaf--a" />
+    <app-frond class="card__leaf card__leaf--b" />
+    <app-frond class="card__leaf card__leaf--c" />
+
+    <app-logo width="230px" plate="#0e3a2c" />
+    <h2 class="card__title">Scannez pour voir la carte</h2>
+
+    <div class="card__qr">
+      @if (svg(); as s) {
+        <div class="card__code" [innerHTML]="s"></div>
+      } @else {
+        <div class="card__code card__code--empty"></div>
+      }
+    </div>
+
+    <p class="card__hint">Ouvrez l’appareil photo de votre téléphone<br />et visez le code</p>
+  </article>
+</div>

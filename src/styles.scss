@@ -1,1 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+ * The Palm Garden — night garden palette.
+ * Deep frond green base, sand for text, string-light gold for prices and
+ * active states, hibiscus red reserved for the logo slash.
+ */
+:root {
+  --bg: #0e3a2c;
+  --bg-deep: #082a1f;
+  --surface: #134734;
+  --ink: #f2e8d0;
+  --muted: #a3bba9;
+  --line: rgba(242, 232, 208, 0.13);
+  --gold: #f5b942;
+  --hibiscus: #ff5a4e;
+  --frond-deep: #124a37;
+  --frond-mid: #1a6146;
+  --frond-lit: #237a51;
+
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-body: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ease-out: cubic-bezier(0.16, 0.9, 0.2, 1);
+
+  /* Kept for components that reference the older names. */
+  --hero-bg: var(--bg-deep);
+  --green: var(--gold);
+  --green-soft: rgba(245, 185, 66, 0.12);
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button, input { font: inherit; color: inherit; }
+
+::selection { background: var(--gold); color: var(--bg-deep); }
+
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}

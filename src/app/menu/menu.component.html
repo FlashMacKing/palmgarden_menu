@@ -1,0 +1,202 @@
+<header class="hero" #hero>
+  <div class="hero__glow" aria-hidden="true"></div>
+
+  @for (f of fronds; track $index) {
+    <div class="frond" [class]="'frond frond--' + f.tone" [style]="frondStyle(f)" aria-hidden="true">
+      <div class="frond__grow">
+        <app-frond class="frond__sway" [bend]="f.bend" />
+      </div>
+    </div>
+  }
+
+  <div class="mark">
+    <svg class="mark__ring" viewBox="0 0 200 200" aria-hidden="true">
+      <circle class="mark__circle" cx="100" cy="100" r="97" pathLength="1" />
+      <g class="mark__orbit">
+        <circle class="mark__lantern" cx="100" cy="3" r="3.2" />
+      </g>
+    </svg>
+
+    <h1 class="mark__name" aria-label="The Palm Garden">
+      <span class="mark__the" aria-hidden="true">The</span>
+      <span class="mark__line mark__line--palm" aria-hidden="true">
+        @for (ch of palm; track $index) {
+          <span class="mark__ch" [style.--i]="$index">{{ ch }}</span>
+        }
+        <svg class="mark__slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <line x1="14" y1="98" x2="86" y2="2" pathLength="1" />
+        </svg>
+      </span>
+      <span class="mark__line mark__line--garden" aria-hidden="true">
+        @for (ch of garden; track $index) {
+          <span class="mark__ch" [style.--i]="$index + 4">{{ ch }}</span>
+        }
+      </span>
+    </h1>
+  </div>
+
+  <p class="hero__sub">Boissons, tapas, pâtes et pizzas</p>
+</header>
+
+<nav class="toolbar" #toolbar aria-label="Navigation de la carte">
+  <div class="toolbar__inner">
+    <div class="toolbar__row">
+      <div class="seg" role="tablist" aria-label="Rubriques" [attr.data-active]="query() ? 'none' : sectionId()">
+        <span class="seg__thumb" aria-hidden="true"></span>
+        @for (s of sections; track s.id) {
+          <button
+            type="button"
+            role="tab"
+            class="seg__btn"
+            [class.is-active]="s.id === sectionId() && !query()"
+            [attr.aria-selected]="s.id === sectionId() && !query()"
+            (click)="selectSection(s.id)">
+            @if (s.id === 'drinks') {
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l-1.2 8.4A4 4 0 0 1 12 15a4 4 0 0 1-3.8-3.6L7 3Zm5 12v5m-4 0h8" /></svg>
+            } @else {
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v8a2 2 0 0 0 2 2v8M10 3v8a2 2 0 0 1-2 2M8 3v6m9-6c-2 1-3 4-3 7h3v11" /></svg>
+            }
+            <span>{{ s.title }}</span>
+          </button>
+        }
+      </div>
+
+      <button
+        type="button"
+        class="icon-btn"
+        [class.is-on]="searchOpen()"
+        [attr.aria-expanded]="searchOpen()"
+        aria-controls="menu-search"
+        [attr.aria-label]="searchOpen() ? 'Fermer la recherche' : 'Rechercher dans la carte'"
+        (click)="toggleSearch(search)">
+        @if (searchOpen()) {
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" /></svg>
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg>
+        }
+      </button>
+    </div>
+
+    <label class="search" id="menu-search" [class.is-open]="searchOpen()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" /></svg>
+      <input
+        #search
+        type="search"
+        placeholder="Boisson, plat…"
+        autocomplete="off"
+        autocorrect="off"
+        enterkeyhint="search"
+        aria-label="Rechercher dans la carte"
+        [attr.tabindex]="searchOpen() ? null : -1"
+        (input)="onSearch(search.value)"
+        (keydown.enter)="search.blur()" />
+    </label>
+
+    <div class="chips" #chips [class.is-hidden]="query()">
+      @for (c of section().categories; track c.id) {
+        <a
+          class="chip"
+          [attr.href]="'#' + c.id"
+          [attr.data-cat]="c.id"
+          [class.is-active]="c.id === activeCategory()"
+          (click)="goToCategory(c.id, $event)">
+          {{ c.title }}
+        </a>
+      }
+    </div>
+  </div>
+</nav>
+
+<main class="content" #content>
+  @if (query()) {
+    <p class="results-meta" aria-live="polite">
+      @if (resultCount()) {
+        {{ resultCount() }} résultat{{ resultCount() > 1 ? 's' : '' }} pour « {{ query() }} »
+      } @else {
+        Aucun résultat pour « {{ query() }} ». Essayez « pizza », « whisky » ou « rosé ».
+      }
+    </p>
+
+    @for (g of results(); track g.category.id) {
+      <section class="cat">
+        <header class="cat__head">
+          <h2 class="cat__title">{{ g.category.title }}</h2>
+          <p class="cat__sub">{{ g.section.title }}</p>
+        </header>
+        <ng-container *ngTemplateOutlet="list; context: { $implicit: g.items }" />
+      </section>
+    }
+  } @else {
+    @for (sid of [sectionId()]; track sid) {
+      <div class="section-swap">
+        @for (c of section().categories; track c.id) {
+          <section class="cat" [id]="c.id">
+            <header class="cat__head">
+              <h2 class="cat__title">{{ c.title }}</h2>
+              <p class="cat__sub">{{ c.subtitle }}</p>
+            </header>
+            <ng-container *ngTemplateOutlet="list; context: { $implicit: c.items }" />
+          </section>
+        }
+
+        @if (sid === 'drinks') {
+          <aside class="notice">
+            <div class="notice__body">
+              <strong>Droit de bouchon</strong>
+              <span>Pour toute bouteille apportée</span>
+            </div>
+            <span class="price">
+              <span class="price__int">{{ int({ value: corkage }) }}</span><span class="price__dec">{{ dec({ value: corkage }) }}</span>
+            </span>
+          </aside>
+        }
+      </div>
+    }
+  }
+</main>
+
+<button type="button" class="to-top" #toTop aria-label="Revenir en haut de la carte" (click)="backToTop()">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6" /></svg>
+</button>
+
+<footer class="footer">
+  <app-logo width="150px" plate="var(--bg)" />
+  <p>Prix en dinars tunisiens ({{ currency }}).</p>
+  <p class="footer__small">L’abus d’alcool est dangereux pour la santé. À consommer avec modération.</p>
+</footer>
+
+<ng-template #list let-items>
+  <ul class="items">
+    @for (item of items; track item.name) {
+      @if (isSingle(item)) {
+        <li class="item">
+          <div class="item__name">
+            <span>{{ item.name }}</span>
+            @if (item.note) { <small>{{ item.note }}</small> }
+          </div>
+          <span class="item__leader" aria-hidden="true"></span>
+          <span class="price">
+            <span class="price__int">{{ int(item.prices[0]) }}</span><span class="price__dec">{{ dec(item.prices[0]) }}</span>
+          </span>
+        </li>
+      } @else {
+        <li class="item item--sizes">
+          <div class="item__name">
+            <span>{{ item.name }}</span>
+            @if (item.note) { <small>{{ item.note }}</small> }
+          </div>
+          <div class="sizes" [style.--cols]="item.prices.length">
+            @for (pr of item.prices; track pr.label) {
+              <div class="size">
+                <span class="size__label">{{ pr.label }}</span>
+                <span class="price">
+                  <span class="price__int">{{ int(pr) }}</span><span class="price__dec">{{ dec(pr) }}</span>
+                </span>
+              </div>
+            }
+          </div>
+        </li>
+      }
+    }
+  </ul>
+</ng-template>

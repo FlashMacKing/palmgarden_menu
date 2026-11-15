@@ -691,24 +691,6 @@ $max: 620px;
   stroke-linejoin: round;
 }
 
-.hh-pill {
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 8px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  background: var(--hibiscus);
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0;
-  text-transform: none;
-  text-decoration: none;
-  translate: 0 -4px;
-  animation: pulse 2.2s ease-in-out infinite;
-}
-
 @keyframes hh-in {
   from { opacity: 0; transform: translateY(10px) scale(0.97); }
 }
@@ -724,8 +706,4 @@ $max: 620px;
 @keyframes wobble {
   0%, 100% { rotate: -10deg; }
   50% { rotate: 6deg; }
-}
-@keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 90, 78, 0.55); }
-  60% { box-shadow: 0 0 0 8px rgba(255, 90, 78, 0); }
 }

@@ -150,9 +150,6 @@
             <header class="cat__head">
               <h2 class="cat__title">
                 {{ c.title }}
-                @if (hh.enabled && c.id === hh.categoryId) {
-                  <a class="hh-pill" routerLink="/happy-hour">Happy hour</a>
-                }
               </h2>
               <p class="cat__sub">{{ c.subtitle }}</p>
             </header>

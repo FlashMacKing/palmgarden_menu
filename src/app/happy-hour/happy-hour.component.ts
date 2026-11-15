@@ -53,6 +53,10 @@ export class HappyHourComponent {
     return formatPrice(v).split(',')[0];
   }
 
+  dec(v: number): string {
+    return ',' + formatPrice(v).split(',')[1];
+  }
+
   /** "Santé !" — clink the glasses and throw a little confetti. */
   toast(): void {
     this.cheers.update((n) => n + 1);

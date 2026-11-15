@@ -177,6 +177,8 @@
   small { font-size: 0.42em; margin-left: 2px; }
 }
 
+.stamp__value--icon { font-size: clamp(30px, 9vw, 40px); rotate: 0deg; }
+
 .lede {
   max-width: 30ch;
   margin: 18px auto 0;

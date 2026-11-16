@@ -43,7 +43,7 @@ export const CORKAGE_FEE = 200;
 export const HAPPY_HOUR = {
   enabled: true,
   categoryId: 'bieres',
-  discount: 1,
+  discount: 1.5,
   hours: 'de 12h à 20h' as string,
 };
 
